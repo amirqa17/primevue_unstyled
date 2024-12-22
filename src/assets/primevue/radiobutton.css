@@ -1,0 +1,86 @@
+/* Base Radio Button */
+.p-radiobutton {
+    @apply inline-flex items-center relative;
+}
+
+.p-radiobutton .p-radiobutton-input {
+    @apply absolute cursor-pointer m-0 p-0 opacity-0 
+        w-full h-full 
+        top-0 left-0 
+        z-10;
+}
+
+.p-radiobutton-box {
+    @apply border-2 border-[#d80000] bg-white 
+        w-5 h-5
+        rounded-full
+        flex items-center justify-center
+        cursor-pointer
+        relative;
+    transition: all 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+/* Default state for the icon (hidden) */
+.p-radiobutton-box .p-radiobutton-icon {
+    @apply w-2 h-2 rounded-full;
+    transition: all 0.2s ease-in-out;
+    transform: scale(0);
+}
+
+/* Hover State */
+.p-radiobutton:not(.p-disabled):has(.p-radiobutton-input:hover) .p-radiobutton-box {
+    @apply border-[#d80000];
+    box-shadow: 0 0 0 8px #ffe8e8;
+}
+
+/* Checked State */
+.p-radiobutton-checked .p-radiobutton-box {
+    @apply bg-white
+}
+
+/* Inner Dot when checked */
+.p-radiobutton-checked .p-radiobutton-box .p-radiobutton-icon {
+    @apply w-2 h-2 bg-[#d80000] rounded-full block;
+    transform: scale(1);
+}
+
+/* Hover on Checked State */
+.p-radiobutton-checked:not(.p-disabled):has(.p-radiobutton-input:hover) .p-radiobutton-box {
+    @apply bg-white 
+}
+
+/* Keep dot color on hover when checked */
+.p-radiobutton-checked:not(.p-disabled):has(.p-radiobutton-input:hover) .p-radiobutton-box .p-radiobutton-icon {
+    @apply bg-[#d80000];
+}
+
+/* Disabled State */
+.p-radiobutton.p-disabled {
+    @apply cursor-not-allowed;
+}
+
+/* Disabled box */
+.p-radiobutton.p-disabled .p-radiobutton-box {
+    @apply border-[#dfdfdf] bg-white cursor-not-allowed;
+}
+
+/* Disabled and checked state */
+.p-radiobutton.p-disabled.p-radiobutton-checked .p-radiobutton-box {
+    @apply border-[#dfdfdf] bg-white;
+}
+
+/* Disabled dot */
+.p-radiobutton.p-disabled.p-radiobutton-checked .p-radiobutton-box .p-radiobutton-icon {
+    @apply bg-[#dfdfdf];
+    transform: scale(1);
+}
+
+/* Remove hover effects for disabled state */
+.p-radiobutton.p-disabled:has(.p-radiobutton-input:hover) .p-radiobutton-box {
+    box-shadow: none;
+}
+
+/* Focus State */
+.p-radiobutton:not(.p-disabled):has(.p-radiobutton-input:focus-visible) .p-radiobutton-box {
+    @apply outline outline-2 outline-offset-2 outline-[#d80000];
+}
