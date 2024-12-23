@@ -1,87 +1,72 @@
+
+<script setup lang="ts">
+import { defineProps, defineEmits } from 'vue';
+import Dialog from 'primevue/dialog';
+import Button from 'primevue/button';
+
+const props = defineProps({
+  visible: Boolean,
+  header: {
+    type: String,
+    default: 'Modal'
+  },
+  contentText: String,
+  formInputs: {
+    type: Array,
+    default: () => []
+  },
+  footerButtons: {
+    type: Array,
+    default: () => [
+      { label: 'Cancel', class: 'p-button-custom-red p-button-outlined', type: 'button', action: null },
+      { label: 'Save', class: 'p-button-custom-red', type: 'button', action: null }
+    ]
+  
+  dialogStyle: {
+    type: Object,
+    default: () => ({ width: '25rem' })
+  },
+  customFooter: Boolean
+});
+
+const emit = defineEmits(['update:visible']);
+
+const handleClose = () => {
+  emit('update:visible', false);
+};
+</script>
+
 <template>
-    <Dialog 
-      v-model:visible="visible" 
-      :header="header" 
-      :style="{ width: '25rem' }"
-      :closable="false"
-    >
+  <Dialog
+    :visible="visible"
+    modal
+    @hide="handleClose"
+    :header="header"
+    :style="dialogStyle"
+  >
+    <!-- Content Slot or Text -->
+    <div v-if="!$slots.content">
       <span class="text-surface-500 dark:text-surface-400 block mb-8">{{ contentText }}</span>
-      
-      <div v-for="(input, index) in formInputs" :key="index" class="flex items-center gap-4 mb-4">
-        <label :for="input.id" class="font-semibold w-24">{{ input.label }}</label>
-        <InputText 
-          v-model="input.model" 
-          :id="input.id" 
-          class="flex-auto" 
-          :autocomplete="input.autocomplete" 
-        />
-      </div>
-  
+    </div>
+    <slot name="content"></slot>
+
+    <!-- Footer (Buttons or Custom Slot) -->
+    <template v-if="!customFooter">
       <div class="flex justify-end gap-2">
-        <Button 
-          class="p-button-custom-red p-button-outlined" 
-          type="button" 
-          label="Cancel" 
-          @click="cancelHandler" 
-        />
-        <Button 
-          class="p-button-custom-red" 
-          type="button" 
-          label="Save" 
-          @click="saveHandler" 
+        <Button
+          v-for="button in footerButtons"
+          :key="button.label"
+          :class="button.class"
+          :type="button.type"
+          :label="button.label"
+          @click="button.action ? button.action() : handleClose"
         />
       </div>
-    </Dialog>
-  </template>
-  
-  <script setup>
-  import { ref } from 'vue';
-  import Dialog from 'primevue/dialog';
-  import InputText from 'primevue/inputtext';
-  import Button from 'primevue/button';
-  
-  // Props
-  const props = defineProps({
-    visible: {
-      type: Boolean,
-      required: true
-    },
-    header: {
-      type: String,
-      default: 'Default Modal'
-    },
-    contentText: {
-      type: String,
-      default: 'Update your information.'
-    },
-    formInputs: {
-      type: Array,
-      default: () => []
-    }
-  });
-  
-  // Emit event to control visibility from parent
-  const emit = defineEmits(['update:visible']);
-  
-  // Local state
-  const visible = ref(props.visible);
-  
-  // Watch for visibility changes
-  watch(() => props.visible, (newValue) => {
-    visible.value = newValue;
-  });
-  
-  const cancelHandler = () => {
-    emit('update:visible', false);
-  };
-  
-  const saveHandler = () => {
-    emit('update:visible', false);
-    // Handle save logic, e.g., emit form data or make an API call.
-  };
-  </script>
-  
-  <style scoped>
-  /* Optional styling for the modal */
-  </style>
-  
+    </template>
+    <slot v-else name="footer"></slot>
+  </Dialog>
+</template>
+
+
+<style scoped>
+</style>

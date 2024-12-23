@@ -1,66 +1,55 @@
 .p-toggleswitch {
-    @apply inline-block w-10 h-6
+    @apply relative inline-block w-[52px] h-[32px];
 }
 
 .p-toggleswitch-input {
-    @apply cursor-pointer disabled:cursor-default appearance-none absolute top-0 left-0 w-full h-full m-0 p-0 opacity-0 z-10 rounded-[30px]
+    @apply cursor-pointer disabled:cursor-default appearance-none absolute top-0 left-0 w-full h-full m-0 p-0 opacity-0 z-10 rounded-[30px];
 }
 
 .p-toggleswitch-slider {
-    @apply inline-block w-full h-full rounded-[30px] shadow-[0_1px_2px_0_rgba(18,18,23,0.05)]
-        bg-surface-300 dark:bg-surface-700
-        border border-transparent
-        transition-colors duration-200
+    @apply relative w-full h-full rounded-[30px] shadow-[0_1px_2px_0_rgba(18,18,23,0.05)] bg-[#FFE8E8] border border-[#D80000] transition-colors duration-200;
 }
 
 .p-toggleswitch-handle {
-    @apply absolute top-1/2 flex justify-center items-center
-        bg-surface-0 dark:bg-surface-400
-        text-surface-500 dark:text-surface-900
-        w-4 h-4 left-1 -mt-2 rounded-full
-        transition-[background,color,left] duration-200
+    @apply absolute top-1/2 bg-[#D80000] text-[#121117] w-[16px] h-[16px] left-[calc(4px)] rounded-full transition-all duration-200 -translate-y-1/2 flex justify-center items-center;
 }
 
 .p-toggleswitch.p-toggleswitch-checked .p-toggleswitch-slider {
-    @apply bg-primary
+    @apply bg-[#D80000];
 }
 
 .p-toggleswitch.p-toggleswitch-checked .p-toggleswitch-handle {
-    @apply bg-surface-0 dark:bg-surface-900 text-primary left-5
+    @apply bg-white text-primary w-[24px] h-[24px] left-[calc(100%_-_28px)] transition-all duration-200;
 }
 
-.p-toggleswitch:not(.p-disabled):has(.p-toggleswitch-input:hover) .p-toggleswitch-slider {
-    @apply bg-surface-400 dark:bg-surface-600
+.p-toggleswitch:not(.p-disabled):hover .p-toggleswitch-slider {
+    @apply bg-[#FFD3D3];
 }
 
-.p-toggleswitch:not(.p-disabled):has(.p-toggleswitch-input:hover) .p-toggleswitch-handle {
-    @apply bg-surface-0 dark:bg-surface-300 text-surface-700 dark:text-surface-800
+.p-toggleswitch:not(.p-disabled):hover.p-toggleswitch-checked .p-toggleswitch-slider {
+    @apply bg-[#BF0000];
 }
 
-.p-toggleswitch:not(.p-disabled):has(.p-toggleswitch-input:hover).p-toggleswitch-checked .p-toggleswitch-slider {
-    @apply bg-primary-emphasis
-}
-
-.p-toggleswitch:not(.p-disabled):has(.p-toggleswitch-input:hover).p-toggleswitch-checked .p-toggleswitch-handle {
-    @apply bg-surface-0 dark:bg-surface-900 text-primary-emphasis
-}
-
-.p-toggleswitch:not(.p-disabled):has(.p-toggleswitch-input:focus-visible) .p-toggleswitch-slider {
-    @apply outline outline-1 outline-offset-2 outline-primary
+.p-toggleswitch:not(.p-disabled):focus-visible .p-toggleswitch-slider {
+    @apply outline outline-1 outline-offset-2 outline-primary;
 }
 
 .p-toggleswitch.p-invalid > .p-toggleswitch-slider {
-    @apply border-red-400 dark:border-red-300
+    @apply border-red-400 dark:border-red-300;
 }
 
 .p-toggleswitch.p-disabled {
-    @apply opacity-100
+    @apply opacity-100;
 }
 
 .p-toggleswitch.p-disabled .p-toggleswitch-slider {
-    @apply bg-surface-200 dark:bg-surface-600
+    @apply bg-[#DFDFDF] border-[#DFDFDF]; /* Disabled state background and border color */
 }
 
 .p-toggleswitch.p-disabled .p-toggleswitch-handle {
-    @apply bg-surface-700 dark:bg-surface-900
+    @apply bg-white; /* Disabled state dot color is white */
+}
+
+.p-toggleswitch.p-disabled.p-toggleswitch-checked .p-toggleswitch-slider {
+    @apply bg-[#DFDFDF]; /* Disabled selected state background color */
 }

@@ -7,6 +7,9 @@ import Checkbox from 'primevue/checkbox';
 import RexInput from './components/RexInput.vue'
 import RexModal from './components/RexModal.vue'
 import Dialog from 'primevue/dialog';
+import ToggleSwitch from 'primevue/toggleswitch';
+import Select from 'primevue/select';
+
 const activeTab = ref('buttons');
 const selectedRadio = ref(null);
 const selectedCheckbox = ref([]);
@@ -18,7 +21,38 @@ const tabs = [
     { id: 'inputs', label: 'Input Fields' },
     { id: 'radio', label: 'Radio Buttons' },
     { id: 'checkbox', label: 'Checkboxes' },
-    { id: 'modal', label: 'Modals' }
+    { id: 'modal', label: 'Modals' },
+    { id: 'switch', label: 'Switches' },
+    { id: 'dropdown', label: 'Dropdowns' }
+];
+
+const selectedCity = ref();
+const cities = ref([
+    { name: 'New York', code: 'NY' },
+    { name: 'Rome', code: 'RM' },
+    { name: 'London', code: 'LDN' },
+    { name: 'Istanbul', code: 'IST' },
+    { name: 'Paris', code: 'PRS' }
+]);
+const isModalVisible = ref(true);
+const form = ref({ name: '', email: '' });
+
+const closeModal = () => {
+  isModalVisible.value = false;
+};
+
+const saveForm = () => {
+  console.log('Form saved:', form.value);
+  isModalVisible.value = false;
+};
+
+// Local state for modal visibility
+const isRexModalVisible = ref(false);
+
+// Example form inputs for the RexModal
+const rexModalInputs = [
+  { id: 'input1', label: 'Input 1', model: '', autocomplete: 'off' },
+  { id: 'input2', label: 'Input 2', model: '', autocomplete: 'off' }
 ];
 </script>
 
@@ -57,7 +91,11 @@ const tabs = [
                         <Button class="p-button-custom-red p-button-outlined">Outlined Button</Button>
                     </div>
                 </div>
-
+<!-- Buttons Tab -->
+<div v-if="activeTab === 'dropdown'" class="space-y-6">
+                    <h2 class="text-lg font-semibold text-gray-700 mb-4">Dropdowns</h2>
+                    <Select v-model="selectedCity" :options="cities" optionLabel="name" placeholder="Select a City" class="w-full md:w-56" />
+                </div>
                 <!-- Inputs Tab -->
                 <div v-if="activeTab === 'inputs'" class="space-y-6">
                     <h2 class="text-lg font-semibold text-gray-700 mb-4">Input Fields</h2>
@@ -108,18 +146,32 @@ const tabs = [
 
                 <!-- Modals Tab -->
                 <div v-if="activeTab === 'modal'" class="space-y-6">
-                    <h2 class="text-lg font-semibold text-gray-700 mb-4">Rex Modal + boosted blur mode</h2>
+                    <h2 class="text-lg font-semibold text-gray-700 mb-4">Rex Modal + blur mode</h2>
                     <div class="flex flex-col gap-4">
                         
-                        
-
+                        <div>
                         <div class="flex flex-col gap-4">
                             <div class="flex items-center gap-2">
                         <Button class="p-button-custom-red" label="Show Default Modal" @click="visible = true" />
                         <Button class="p-button-custom-red" label="Show Blur Modal" @click="visibleBlur = true" />
+                        <Button class="p-button-custom-red" label="Open Reusable Component Modal" @click="isRexModalVisible = true" />
 </div></div>
-
-
+ <!-- Reusable RexModal component here -->
+ <RexModal
+    :visible="isModalVisible"
+    header="Edit Profile"
+    contentText="Update your profile details below."
+    :formInputs="[
+      { id: 'name', label: 'Name', model: form.name, component: InputText, props: { placeholder: 'Enter your name' } },
+      { id: 'email', label: 'Email', model: form.email, component: InputText, props: { type: 'email' } }
+    ]"
+    :footerButtons="[
+      { label: 'Cancel', class: 'p-button-outlined', action: closeModal },
+      { label: 'Submit', class: 'p-button', action: saveForm }
+    ]"
+  />
+  </div>
+ <!-- Generic Modals -->
 <Dialog v-model:visible="visible" modal header="Default Modal" :style="{ width: '25rem' }">
     <span class="text-surface-500 dark:text-surface-400 block mb-8">Update your information.</span>
     <div class="flex items-center gap-4 mb-4">
@@ -151,13 +203,33 @@ const tabs = [
     </div>
 </Dialog>
 
+<!-- RexModal Component -->
+<RexModal 
+  :visible="isRexModalVisible" 
+  header="Rex Modal" 
+  contentText="This is a reusable modal." 
+  :formInputs="rexModalInputs" 
+  @update:visible="isRexModalVisible = $event" 
+/>
+
 
 
 
                         
                     </div>
+                    
                 </div>
+                               <!-- Checkboxes Tab -->
+                               <div v-if="activeTab === 'switch'" class="space-y-6">
+                    <h2 class="text-lg font-semibold text-gray-700 mb-4">Switcher Component</h2>
+                    <div class="flex flex-col gap-4">
+                        <ToggleSwitch v-model="checked" />
+                        <ToggleSwitch v-model="checked" disabled />
+                    </div>
+                </div>
+
             </div>
+            
         </div>
     </div>
 </template>
